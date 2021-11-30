@@ -6,30 +6,69 @@
 import sys                                                               # oredenar lista de lista segun uno de sus parametros
 from operator import itemgetter                                          # ?
 from time import sleep                                                   # Controlar los tiempos de muestra
-import colorama                                                          # colores de letra e imprenta elegante
+from colorama import init, Fore, Cursor, Back                            # Permite colorear los textos, y manipular la posicion del cursor que escribe los mismos, pero necesita iniciarse primero
+from colored import fore                                                 # Mas colores para las letras
+from asciistuff import Lolcat                                            # Colores en paletas y degradados llamativos, tambien trae funciones de titulos con estilo y otras cosas que no se usaron en este trabajo
+from  pyfiglet  import  Figlet                                           # Titulos en gran tamaño con estilo
 
 inventario = []
-modulo_serial = []
+numSerie = []
+palabras = []
+
 archivo = open("comics.txt") # txt
-for i in archivo:
-    linea = str(archivo.readline())
-    aux = []
-    for j in linea:
-        if j != "~":
-            pass
-    inventario.append(aux)
+data = archivo.read()
+
+aux = []
+aux_string = ""
+
+for i in data:
+    if i == "\n":
+        continue
+    if i != "|":
+        if i != "~":
+            aux_string += i
+        else:
+            aux.append(aux_string)
+            aux_string = ""
+    else:
+        aux.append(aux_string)
+        inventario.append(aux)
+        aux = []
+        aux_string = ""
 
 archivo.close()
 
-print(inventario)
-exit()
+for i, comic in enumerate(inventario):
+
+    comic[1] = int(comic[1])
+    comic[2] = int(comic[2])
+    comic[3] = int(comic[3])
+    comic[4] = bool(comic[4])
+    serie_aux = []
+    serie_aux.append(i)
+    serie_aux.append(comic[1])
+    numSerie.append(serie_aux)
+
+    palabras_aux = []
+    word = ""
+    for char in comic[0]:
+        if char != " ":
+            word += char
+        else:
+            palabras_aux.append(i)
+            palabras_aux.append(word)
+            palabras.append(palabras_aux)
+            palabras_aux = []
+            word = ""
+    palabras_aux.append(i)
+    palabras_aux.append(word)
+    palabras.append(palabras_aux)
+    palabras_aux = []
+    word = ""
 
 # =========================================================================================================================
 #   listas necesarias
 
-inventario =[["jose",26303183,100,5,True], ["chao pescao",87456123,50,3,True],["jose volvio", 26303186, 450, 6, True]]                        # inventario general
-numSerie=[[0,26303183],[1,87456123]]                                                  # numero de serie y posicion relativa
-palabras =[[1, "chao"], [0, "jose"], [2, "jose"], [1, "pescao"], [2,"volvio"]]                                        # palabras con posicion relativa
 count = [0]
 # =========================================================================================================================
 #   Funciones:
@@ -38,7 +77,7 @@ def menu(count):                                    # Mostrar Menu principal con
     
     if count[0] == 0:
         print("""
-    >> Bienvenido a la tienda de comics, porfavor elije una opcion:""")
+    >> Bienvenido a la tienda de comics, por favor elija una opcion:""")
     else:
         if (count[0] % 2) == 0: 
             print("\n    >> Elija una de las opciones para interactuar con la tienda:")
@@ -46,7 +85,7 @@ def menu(count):                                    # Mostrar Menu principal con
             print("\n    >> Bienvenido otra vez, ¿Que accion desea realizar ahora?:")
     count[0] += 1
     sleep(0.56)
-    print('''
+    print(fore.WHITE + '''
         1. Buscar Historieta
         2. Comprar Historieta
         3. Reabastecer Inventario
@@ -57,7 +96,6 @@ def menu(count):                                    # Mostrar Menu principal con
     ''')
 
     return count
- 
 # -------------------------------------------------------------------------------------------------------------------------
 def agregarH(inventario, numSerie, palabras):               # crear la lista que queremos agregar (faltan las validaciones)
 
@@ -65,42 +103,41 @@ def agregarH(inventario, numSerie, palabras):               # crear la lista que
     while(True): # Bucle de Registro de nombre
         try:
 
-            nombre = input("Ingrese el Nombre de la Historieta (MAX 40 Caracteres): ") # Ingresar el nombre de la historieta
+            nombre = input(fore.GREEN_YELLOW+ "Ingrese el Nombre de la Historieta (MAX 40 Caracteres): " + fore.WHITE) # Ingresar el nombre de la historieta
 
             # Verificar que el comic sea acto de entrar al sistema :
 
             if len(nombre) == 0 or len(nombre) > 40: # Tiene una cantidad de caracteres aceptable en el nombre
-                print(" >> Nombre invalido")
+                print(fore.RED +" >> Nombre invalido" + fore.WHITE)
                 registrable = False
 
             print(len(inventario)) 
 
             if len(inventario) != 0:
                 for i in range(0, len(inventario)): # No esta ya registrada con anterioridad al sistema 
-                    print(f"{i} lista  {inventario[i][0]}")
                     if nombre == inventario[i][0]: # Se encontro una coincidencia
-                        print(" >> Ya hay registrado un comic bajo ese nombre.")
+                        print(fore.ORANGE + " >> Ya hay registrado un comic bajo ese nombre." + fore.WHITE)
                         registrable = False
                         break
 
             if registrable == False: # Se detecto que ya habia en la lista un comic con ese nombre
 
-                print(" >> ¿Desea volver a intentar registrar la historieta?:")
+                print(fore.GREEN_YELLOW+ " >> ¿Desea volver a intentar registrar la historieta?:")
 
                 while(True): # Desea continuar el registro?
                     try:
-                        question_repeat = int(input(" 1 - Si / 2  - No "))
+                        question_repeat = int(input(" 1 - Si / 2  - No " + fore.WHITE))
                         if question_repeat == 1:
                             registrable = True
                             break
                         elif question_repeat == 2:
                             break
                         else:
-                            print(" >> Comando invalido, intente nuevamente")
+                            print(fore.ORANGE_RED + " >> Comando invalido, intente nuevamente" + fore.WHITE)
                     except ValueError:
-                        print(" \n>> Error de comando, solo se aceptan numeros\n")
+                        print(fore.RED + " \n>> Error de comando, solo se aceptan numeros\n" + fore.WHITE)
                     except:
-                        print(" \n>> Error desconocido\n")
+                        print(fore.RED + " \n>> Error desconocido\n" + fore.WHITE)
 
                 if registrable == True:
                     continue
@@ -109,51 +146,51 @@ def agregarH(inventario, numSerie, palabras):               # crear la lista que
             else:
                 break
         except ValueError:
-            print(" \n>> Error de comando\n")
+            print(fore.RED + " \n>> Error de comando\n" + fore.WHITE)
         except:
-            print(" \n>> Error desconocido\n")
+            print(fore.RED + " \n>> Error desconocido\n" + fore.WHITE)
 
     while(True): # Bucle de registro de serial
         try:    
-            serial = int(input("Ingrese el serial de la Historieta (8 Digitos): ")) # Ingresar el serial de la historieta
+            serial = int(input(fore.GREEN_YELLOW+"Ingrese el serial de la Historieta (8 Digitos): " + fore.WHITE)) # Ingresar el serial de la historieta
             if len(str(serial)) == 8 and serial >= 0:
-                print(" >> Serial aceptado")
+                print(fore.GREEN +" >> Serial aceptado")
                 break
             else:
-                print(" >> Los seriales deben llevar 8 digitos, porfavor intente denuevo")
+                print(fore.YELLOW +" >> Los seriales deben llevar 8 digitos, porfavor intente denuevo" + fore.WHITE)
 
         except ValueError:
-            print(" \n>> Error de comando, solo se aceptan numeros\n")
+            print(fore.RED +" \n>> Error de comando, solo se aceptan numeros\n" + fore.WHITE)
         except:
-            print(" \n>> Error desconocido\n")    
+            print(fore.RED +" \n>> Error desconocido\n")    
 
     while(True): # Bucle registro de precio
         try:    
 
-            precio = int(input("Ingrese el Precio de Venta (MAX 3 Digitos): "))
+            precio = int(input(fore.GREEN_YELLOW+"Ingrese el Precio de Venta (MAX 3 Digitos): " + fore.WHITE))
 
             if len(str(precio)) <= 3 and precio > 0:
-                print(" >> Precio aceptado")
+                print(fore.GREEN + " >> Precio aceptado" + fore.WHITE)
                 break
             else:
-                print(" >> Los costos deben tener un tamaño maximo de 3 digitos y no pueden ser menores a 1$, porfavor intente denuevo")
+                print(fore.YELLOW + " >> Los costos deben tener un tamaño maximo de 3 digitos y no pueden ser menores a 1$, porfavor intente denuevo" + fore.WHITE)
 
 
         except ValueError:
-            print(" \n>> Error de comando, solo se aceptan numeros\n")
+            print(fore.RED +" \n>> Error de comando, solo se aceptan numeros\n" + fore.WHITE)
         except:
-            print(" \n>> Error desconocido\n")    
+            print(fore.RED +" \n>> Error desconocido\n" + fore.WHITE)    
 
     while(True): # Bucle de registro de cantidad
         try:     
 
-            num = int(input("ingrese el numero de historietas que se agregan al inventario (MAX 2 Digitos) : "))
+            num = int(input(fore.GREEN_YELLOW+"ingrese el numero de historietas que se agregan al inventaruio (MAX 2 Digitos) : "  + fore.WHITE))
 
             if len(str(num)) <= 2 and num > 0:
-                print(" >> Numero aceptado")
+                print(fore.GREEN + " >> Numero aceptado" + fore.WHITE)
                 
             else:
-                print(" >> En el inventario caben hasta 99 comics, por favor intente de nuevo")
+                print(fore.YELLOW + " >> En el inventario caben hasta 99 comics, porfavor intente denuevo" + fore.WHITE)
                 continue
 
             agregar = [nombre,serial,precio,num] 
@@ -669,7 +706,7 @@ def main():                                                                     
             
             # Pedir al usuario que seleccione una opcion:
             sleep(0.6)
-            respuesta = int(input( "    >>> SELECCION: ")) # Ingresar un numero del 0 al 6
+            respuesta = int(input(fore.ORANGE_RED_1 + "    >>> SELECCION: "  + fore.WHITE )) # Ingresar un numero del 0 al 6
             print("\n"+ "-"*120)
             if respuesta == 1:
                 buscar(1)
@@ -693,11 +730,16 @@ def main():                                                                     
                 sleep(0.8)
                 print("\n >> Hasta la proxima usuario. \n")
                 sleep(0.8)
+                print(Cursor.UP(2) + Cursor.FORWARD(36) + "Cerrando sesion" + Cursor.UP(1))
+                for i in range(15):
+                    print(Cursor.FORWARD(36+15) + ("."*i) + Cursor.UP(1))
+                    sleep(0.1)
+                print("\n")
                 break
                 #sys.exit()
 
             else:
-                print (" \n>> Su seleccion no fue valida, intente de nuevo por favor:\n")
+                print (fore.YELLOW_1 + " \n>>"+ fore.RED + " Su seleccion no fue valida, intente de nuevo por favor:\n" + fore.WHITE)
 
         #except ValueError:
         #    print(" \n>> Error de comando, solo se aceptan numeros\n")
@@ -705,13 +747,15 @@ def main():                                                                     
         #    print(" \n>> Error desconocido\n")
 
 # =========================================================================================================================
-sleep(0.5)                                                                                                         # Suspenso
-print("\n>> "+"="*114 + " <<")
+f = Figlet(font='slant')                                                                               # Inicializa titular
+sleep(0.5)                                                                                                       # Suspenso
+print(Lolcat(("\n>> "+"="*114 + " <<"), spread = 1))
 sleep(0.6)
-print(" "*48 + "Welcome to Comic-Land:")
+print(" "*15 + f.renderText("Welcome to Comic-Land:"))                                             # Un membrete decorativo
 sleep(0.6)
-print(">> "+"="*114 + " <<")     # Un membrete decorativo
+print(Lolcat(("\n>> "+"="*114 + " <<"), spread = 1))  
 sleep(0.7)
 main()                                                                                     # Empezar ejecucion del programa
 # =========================================================================================================================
-# Programar, es un arte, asi como el dibujar
+# Programar, es un arte, tal y como el dibujar u el cantar.
+# =========================================================================================================================
