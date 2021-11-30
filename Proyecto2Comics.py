@@ -193,7 +193,7 @@ def agregarH(inventario, numSerie, palabras):               # crear la lista que
             agregar = [nombre,serial,precio,num] 
             agregar.append(True)
 
-            new_comic = "\n" + nombre + "~" + str(serial) + "~" + str(num) + "~True|"
+            new_comic = "\n" + nombre + "~" + str(serial) + "~" + str(precio) + "~" + str(num) + "~True|"
 
             # agregamos la lista introducida al inventario general 
 
@@ -236,6 +236,42 @@ def ordenar(lista,posicion): # ordenar cualquier lista segun el parametro que pa
     ordenada = sorted(lista, key=itemgetter(posicion))
     print(ordenada)
     return ordenada
+
+def quicksort(numSeries):
+    #extraemos pivote
+
+    pivote = numSeries
+
+    if len(pivote) > 1: # Valida que si existan elementos por ordenar en realidad
+
+        #extraemos serial de pivote
+        piv_serial= pivote[0][1]
+        #creamos las listas mayor y menor y al comparar 
+
+        mayor = []
+        centro = []
+        menor =[]
+        final= len(pivote)
+        i = 0
+        while i < final:
+
+            comparar = pivote[i][1]
+            if comparar > piv_serial:
+                #print(numSerie[i])
+                mayor.append(pivote[i])
+            elif comparar < piv_serial:
+                #print(numSerie[i])
+                menor.append(pivote[i])
+            elif comparar == piv_serial:
+                #print(numSerie[i])
+                centro.append(pivote[i])
+            i += 1
+
+        return quicksort(menor)+quicksort(centro)+quicksort(mayor) # Llama a una recursividad sobre sus propias listas con lo que pretende ordenarlas internamente
+    else:
+        
+        return pivote # No queda mas por ordenar. Asi que retorna la lista original
+    
 # -------------------------------------------------------------------------------------------------------------------------    
 def imprimirBusqueda():                                           # Mostrar las opciones con la cual se realiza la busqueda
 
@@ -261,7 +297,7 @@ def buscar(code):                                                               
     # Operar algoritmo de busqueda:
 
     while(True): # Bucle de seleccion de un metodo
-        #try:
+        try:
             respuesta_2 = int(input("==> ")) # Ingresar una opcion
             # Opciones: 
 
@@ -316,8 +352,8 @@ def buscar(code):                                                               
                 break
             else: # Validar que si es un numero no contemplado en la lista intente nuevamente seleccionar
                 print("Su selección no fue valida, intente nuevamente")
-        #except:
-        #    print("Comando invalido, seleccione un numero")
+        except:
+            print("Comando invalido, seleccione un numero")
     return x 
 # -------------------------------------------------------------------------------------------------------------------------        
 def buscar_serial(numSerie):                                            # Busca por el serial en la tabla extra una libreta
@@ -656,6 +692,7 @@ def eliminado():               # Pone en apunte que debe sacar del sistema comic
             delete = int(input( "   > >>> "))
             sleep(1)
             if delete == 1:
+
                 inventario[x[1]][4] = False
                 print("\n  >> Comic retirado de circulacion correctamente.\n" + "-"*98)
                 break
@@ -757,6 +794,13 @@ sleep(0.6)
 print(Lolcat(("\n>> "+"="*114 + " <<"), spread = 1))  
 sleep(0.7)
 main()                                                                                     # Empezar ejecucion del programa
+# =========================================================================================================================
+archivo = open("comics.txt", "w")
+saved = ""
+for comic in inventario:
+    saved += comic[0] + "~" + str(comic[1]) + "~" + str(comic[2]) + "~" + str(comic[3]) + "~" + str(comic[4]) + "|\n"
+archivo.write(saved)
+archivo.close()
 # =========================================================================================================================
 # Programar, es un arte, tal y como el dibujar u el cantar.
 # =========================================================================================================================

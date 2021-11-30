@@ -3,8 +3,8 @@ Wonder Woman~87456123~50~3~True|
 Batman The Dark Knight~26303186~450~6~True|
 Superman Vs Batman~85740912~35~80~True|
 Fantastic Four~26443183~10~5~True|
-El Chavo Del Ocho~87056003~40~30~True|
 Batman The Dark Knight Rises~26311181~200~10~True|
 Spiderman~33333333~50~2~True|
 Wolverine~82730421~882~3~True|
-Invincible~45056098~10~True|
+Invincible~45056098~10~10~True|
+Magneto~20187453~876~1~True|
