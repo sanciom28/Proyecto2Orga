@@ -198,9 +198,9 @@ def agregarH(inventario, numSerie, palabras):               # crear la lista que
 
             # agregamos la lista introducida al inventario general 
 
-            inventario.append(agregar)
-
-            print(inventario)
+            add_to_txt = open("comics.txt", "a")
+            add_to_txt.write("\n" + nombre + "~" + serial + "~" + precio + "~" + num + "|")
+            add_to_txt.close()
 
             # agregamos  la lista introducida a la lista numSerie
 

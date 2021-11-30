@@ -6,3 +6,5 @@ Fantastic Four~26443183~10~5~True|
 El Chavo Del Ocho~87056003~40~30~True|
 Batman The Dark Knight Rises~26311181~200~10~True|
 Thanos Vs Mickey Mouse~85987912~98~70~True|
+Spiderman~33333333~50~2~True|
+Wolverine~82730421~882~3~True|
