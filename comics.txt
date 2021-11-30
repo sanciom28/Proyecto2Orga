@@ -8,3 +8,6 @@ Spiderman~33333333~50~2~True|
 Wolverine~82730421~882~3~True|
 Invincible~45056098~10~10~True|
 Magneto~20187453~876~1~True|
+The Flash~77800375~707~32~True|
+Green Lantern~34346512~20~6~True|
+X-men~88345477~7~50~True|

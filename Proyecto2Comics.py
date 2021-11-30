@@ -11,6 +11,38 @@ from colored import fore                                                 # Mas c
 from asciistuff import Lolcat                                            # Colores en paletas y degradados llamativos, tambien trae funciones de titulos con estilo y otras cosas que no se usaron en este trabajo
 from  pyfiglet  import  Figlet                                           # Titulos en gran tamaño con estilo
 
+def division(arr, low, high):
+    i = (low-1)
+    pivot = arr[high]
+ 
+    for j in range(low, high):
+ 
+        if arr[j] <= pivot:
+ 
+            i = i+1
+            arr[i], arr[j] = arr[j], arr[i]
+ 
+    arr[i+1], arr[high] = arr[high], arr[i+1]
+    return (i+1)
+
+def quickSort(arr, low, high):
+    if len(arr) == 1:
+        return arr
+    if low < high:
+        pi = division(arr, low, high)
+        quickSort(arr, low, pi-1)
+        quickSort(arr, pi+1, high)
+
+def sort(arr):
+    arr2 = []
+    for i in range(len(arr)):
+        arr2.append(arr[i][1])
+    quickSort(arr2, 0, len(arr2)-1)
+    new_arr = []
+    for i in range(len(arr)):
+        new_arr.append([i,arr2[i]])
+    return new_arr
+
 inventario = []
 numSerie = []
 palabras = []
@@ -65,6 +97,7 @@ for i, comic in enumerate(inventario):
     palabras_aux = []
     word = ""
 
+numSerie = sort(numSerie)
 # =========================================================================================================================
 #   listas necesarias
 
@@ -147,6 +180,7 @@ def agregarH(inventario, numSerie, palabras):               # crear la lista que
         except:
             print(fore.RED + " \n>> Error desconocido\n" + fore.WHITE)
 
+    print(fore.GREEN + " \n>> Nombre aceptado" + fore.WHITE)
     while(True): # Bucle de registro de serial
         try:    
             serial = int(input(fore.GREEN_YELLOW+"Ingrese el serial de la Historieta (8 Digitos): " + fore.WHITE)) # Ingresar el serial de la historieta
@@ -179,7 +213,7 @@ def agregarH(inventario, numSerie, palabras):               # crear la lista que
             print(fore.RED +" \n>> Error desconocido\n" + fore.WHITE)    
 
     while(True): # Bucle de registro de cantidad
-        try:     
+        #try:     
 
             num = int(input(fore.GREEN_YELLOW+"ingrese el numero de historietas que se agregan al inventaruio (MAX 2 Digitos) : "  + fore.WHITE))
 
@@ -210,7 +244,8 @@ def agregarH(inventario, numSerie, palabras):               # crear la lista que
                 poscRelativa = i
                 temporal = [poscRelativa,numserie]
                 numSerie.append(temporal)
-                print(numSerie)
+
+            numSerie = sort(numSerie)
             
             # agregamos la lista introducida a lista palabras 
             for i in range(len(inventario)):
@@ -219,14 +254,13 @@ def agregarH(inventario, numSerie, palabras):               # crear la lista que
                 nombre = str(nombre)
                 splits = [prelativa, nombre]
                 palabras.append(splits)
-                print(palabras)
                 
             break
 
-        except ValueError:
-            print(" \n>> Error de comando, solo se aceptan numeros\n")
-        except:
-            print(" \n>> Error desconocido\n")
+        # except ValueError:
+        #     print(" \n>> Error de comando, solo se aceptan numeros\n")
+        # except:
+        #     print(" \n>> Error desconocido\n")
 
 
     return inventario, numSerie, palabras
@@ -236,41 +270,6 @@ def ordenar(lista,posicion): # ordenar cualquier lista segun el parametro que pa
     ordenada = sorted(lista, key=itemgetter(posicion))
     print(ordenada)
     return ordenada
-
-def quicksort(numSeries):
-    #extraemos pivote
-
-    pivote = numSeries
-
-    if len(pivote) > 1: # Valida que si existan elementos por ordenar en realidad
-
-        #extraemos serial de pivote
-        piv_serial= pivote[0][1]
-        #creamos las listas mayor y menor y al comparar 
-
-        mayor = []
-        centro = []
-        menor =[]
-        final= len(pivote)
-        i = 0
-        while i < final:
-
-            comparar = pivote[i][1]
-            if comparar > piv_serial:
-                #print(numSerie[i])
-                mayor.append(pivote[i])
-            elif comparar < piv_serial:
-                #print(numSerie[i])
-                menor.append(pivote[i])
-            elif comparar == piv_serial:
-                #print(numSerie[i])
-                centro.append(pivote[i])
-            i += 1
-
-        return quicksort(menor)+quicksort(centro)+quicksort(mayor) # Llama a una recursividad sobre sus propias listas con lo que pretende ordenarlas internamente
-    else:
-        
-        return pivote # No queda mas por ordenar. Asi que retorna la lista original
     
 # -------------------------------------------------------------------------------------------------------------------------    
 def imprimirBusqueda():                                           # Mostrar las opciones con la cual se realiza la busqueda
