@@ -17,6 +17,7 @@ palabras = []
 
 archivo = open("comics.txt") # txt
 data = archivo.read()
+archivo.close()
 
 aux = []
 aux_string = ""
@@ -35,8 +36,6 @@ for i in data:
         inventario.append(aux)
         aux = []
         aux_string = ""
-
-archivo.close()
 
 for i, comic in enumerate(inventario):
 
@@ -110,8 +109,6 @@ def agregarH(inventario, numSerie, palabras):               # crear la lista que
             if len(nombre) == 0 or len(nombre) > 40: # Tiene una cantidad de caracteres aceptable en el nombre
                 print(fore.RED +" >> Nombre invalido" + fore.WHITE)
                 registrable = False
-
-            print(len(inventario)) 
 
             if len(inventario) != 0:
                 for i in range(0, len(inventario)): # No esta ya registrada con anterioridad al sistema 
@@ -196,11 +193,15 @@ def agregarH(inventario, numSerie, palabras):               # crear la lista que
             agregar = [nombre,serial,precio,num] 
             agregar.append(True)
 
+            new_comic = "\n" + nombre + "~" + str(serial) + "~" + str(num) + "~True|"
+
             # agregamos la lista introducida al inventario general 
 
             add_to_txt = open("comics.txt", "a")
-            add_to_txt.write("\n" + nombre + "~" + serial + "~" + precio + "~" + num + "|")
+            add_to_txt.write(new_comic)
             add_to_txt.close()
+
+            inventario.append(agregar)
 
             # agregamos  la lista introducida a la lista numSerie
 
