@@ -7,6 +7,23 @@ import sys                                                               # orede
 from operator import itemgetter                                          # ?
 from time import sleep                                                   # Controlar los tiempos de muestra
 import colorama                                                          # colores de letra e imprenta elegante
+
+inventario = []
+modulo_serial = []
+archivo = open("comics.txt") # txt
+for i in archivo:
+    linea = str(archivo.readline())
+    aux = []
+    for j in linea:
+        if j != "~":
+            pass
+    inventario.append(aux)
+
+archivo.close()
+
+print(inventario)
+exit()
+
 # =========================================================================================================================
 #   listas necesarias
 
@@ -130,13 +147,13 @@ def agregarH(inventario, numSerie, palabras):               # crear la lista que
     while(True): # Bucle de registro de cantidad
         try:     
 
-            num = int(input("ingrese el numero de historietas que se agregan al inventaruio (MAX 2 Digitos) : "))
+            num = int(input("ingrese el numero de historietas que se agregan al inventario (MAX 2 Digitos) : "))
 
             if len(str(num)) <= 2 and num > 0:
                 print(" >> Numero aceptado")
                 
             else:
-                print(" >> En el inventario caben hasta 99 comics, porfavor intente denuevo")
+                print(" >> En el inventario caben hasta 99 comics, por favor intente de nuevo")
                 continue
 
             agregar = [nombre,serial,precio,num] 
